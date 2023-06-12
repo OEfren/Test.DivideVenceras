@@ -90,7 +90,6 @@ public class Program {
 		
 		gragh.drawMatriz();
 		
-		
 		gragh.addElement("v","a");gragh.addElement("v","b");gragh.addElement("v","c");
 		gragh.addElement("a","v");gragh.addElement("a","b");gragh.addElement("a","d");
 		gragh.addElement("a","f");gragh.addElement("b","v");gragh.addElement("b","a");
@@ -148,6 +147,8 @@ public class Program {
 			System.out.println();
 			System.out.println();	
 		}
+		
+		gragh.drawMatriz();
 		
 		gragh = new Graph();
 		gragh.addElement("1","2");

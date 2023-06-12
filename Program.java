@@ -2,9 +2,11 @@ package mx.com.test.uag;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 class Node {
 	
@@ -45,12 +47,50 @@ class Graph {
 		}
 	}
 	
+	public void drawMatriz() {
+		List<String> items = nodes.keySet().stream().sorted().collect(Collectors.toList());
+		for (String item : items) {
+			Node node = nodes.get(item);
+			System.out.print("Node: " + node.source + " - ");
+			for (String itemIn : items) {
+				System.out.print((node.childs.contains(itemIn) ? "1" : "0") + ",");
+			}
+			System.out.println();
+		}	
+	}
+	
 }
 
 public class Program {
 	
 	public static void main(String[] args) {
 		Graph gragh = new Graph();
+		gragh.addElement("1","2");
+		gragh.addElement("1","4");
+		gragh.addElement("1","5");
+		gragh.addElement("2","1");
+		gragh.addElement("2","3");
+		gragh.addElement("2","4");
+		gragh.addElement("3","2");
+		gragh.addElement("4","1");
+		gragh.addElement("4","2");
+		gragh.addElement("4","5");
+		gragh.addElement("4","6");
+		gragh.addElement("5","1");
+		gragh.addElement("5","4");
+		gragh.addElement("6","4");
+		gragh.addElement("6","5");
+		
+		for (Entry<String, Node> entry : gragh.nodes.entrySet()) {
+			System.out.println("Padre " + entry.getKey() + "");
+			entry.getValue().stack.forEach(item -> System.out.println(item.source));
+			System.out.println();
+			System.out.println();	
+		}
+		
+		gragh.drawMatriz();
+		
+		
 		gragh.addElement("v","a");gragh.addElement("v","b");gragh.addElement("v","c");
 		gragh.addElement("a","v");gragh.addElement("a","b");gragh.addElement("a","d");
 		gragh.addElement("a","f");gragh.addElement("b","v");gragh.addElement("b","a");
@@ -69,6 +109,8 @@ public class Program {
 			System.out.println();
 			System.out.println();	
 		}
+		
+		gragh.drawMatriz();
 		
 		gragh = new Graph();
 		gragh.addElement("0", "29");gragh.addElement("0", "46");gragh.addElement("0", "21");
@@ -106,5 +148,32 @@ public class Program {
 			System.out.println();
 			System.out.println();	
 		}
+		
+		gragh = new Graph();
+		gragh.addElement("1","2");
+		gragh.addElement("1","4");
+		gragh.addElement("1","5");
+		gragh.addElement("2","1");
+		gragh.addElement("2","3");
+		gragh.addElement("2","4");
+		gragh.addElement("3","2");
+		gragh.addElement("4","1");
+		gragh.addElement("4","2");
+		gragh.addElement("4","5");
+		gragh.addElement("4","6");
+		gragh.addElement("5","1");
+		gragh.addElement("5","4");
+		gragh.addElement("6","4");
+		gragh.addElement("6","5");
+		
+		for (Entry<String, Node> entry : gragh.nodes.entrySet()) {
+			System.out.println("Padre " + entry.getKey() + "");
+			entry.getValue().stack.forEach(item -> System.out.println(item.source));
+			System.out.println();
+			System.out.println();	
+		}
+		
+		gragh.drawMatriz();
+		
 	}
 }

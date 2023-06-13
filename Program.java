@@ -2,7 +2,9 @@ package mx.com.test.uag;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
@@ -11,7 +13,7 @@ import java.util.stream.Collectors;
 class Node {
 	
 	public String source;
-	public Stack<Node> stack = new Stack<Node>();
+	public Queue<Node> stack = new LinkedList<Node>();
 	public Set<String> childs = new HashSet<String>();
 	
 	public Node(String source) {
@@ -29,6 +31,8 @@ class Node {
 
 class Graph {
 	
+	Stack<String> pila = new Stack<String>();
+	Stack<String> visited = new Stack<String>();
 	HashMap<String, Node> nodes = new HashMap<>();
 	
 	public void addElement(String source, String edge) {
@@ -59,12 +63,53 @@ class Graph {
 		}	
 	}
 	
+	public void restart() {
+		pila = new Stack<String>();
+		visited = new Stack<String>();
+	}
+	
+	public void queryRelations(String source) {	
+		if (!visited.contains(source)) {
+			
+			visited.add(source);
+			pila.add(source);
+			
+			System.out.print(source + ",");
+
+			String item = nodes.get(source).stack.element().source;
+			
+			if (visited.contains(item)) {
+				nodes.get(source).stack.poll();
+				queryRelations(source);
+			}
+			else {
+				queryRelations(nodes.get(source).stack.element().source);
+			}
+			
+		}
+		else if (visited.contains(source) && nodes.get(source).stack.size() > 0) {
+			String item = nodes.get(source).stack.poll().source;
+			if (visited.contains(item)) {
+				queryRelations( source);
+			}
+			else {
+				queryRelations(item);
+			}	
+		}
+		else if (pila.size() > 0) {
+			queryRelations( pila.pop() );
+		}
+	}
+	
 }
 
 public class Program {
 	
 	public static void main(String[] args) {
-		Graph gragh = new Graph();
+		
+		Graph gragh;
+		
+		gragh = new Graph();
 		gragh.addElement("1","2");
 		gragh.addElement("1","4");
 		gragh.addElement("1","5");
@@ -89,7 +134,11 @@ public class Program {
 		}
 		
 		gragh.drawMatriz();
+		System.out.println();
+		gragh.restart();
+		gragh.queryRelations("v");
 		
+		gragh = new Graph();
 		gragh.addElement("v","a");gragh.addElement("v","b");gragh.addElement("v","c");
 		gragh.addElement("a","v");gragh.addElement("a","b");gragh.addElement("a","d");
 		gragh.addElement("a","f");gragh.addElement("b","v");gragh.addElement("b","a");
@@ -110,6 +159,10 @@ public class Program {
 		}
 		
 		gragh.drawMatriz();
+		System.out.println();
+		gragh.restart();
+		gragh.queryRelations("v");
+		
 		
 		gragh = new Graph();
 		gragh.addElement("0", "29");gragh.addElement("0", "46");gragh.addElement("0", "21");
@@ -150,31 +203,12 @@ public class Program {
 		
 		gragh.drawMatriz();
 		
-		gragh = new Graph();
-		gragh.addElement("1","2");
-		gragh.addElement("1","4");
-		gragh.addElement("1","5");
-		gragh.addElement("2","1");
-		gragh.addElement("2","3");
-		gragh.addElement("2","4");
-		gragh.addElement("3","2");
-		gragh.addElement("4","1");
-		gragh.addElement("4","2");
-		gragh.addElement("4","5");
-		gragh.addElement("4","6");
-		gragh.addElement("5","1");
-		gragh.addElement("5","4");
-		gragh.addElement("6","4");
-		gragh.addElement("6","5");
+		System.out.println();
+		gragh.restart();
+		gragh.queryRelations("0");
 		
-		for (Entry<String, Node> entry : gragh.nodes.entrySet()) {
-			System.out.println("Padre " + entry.getKey() + "");
-			entry.getValue().stack.forEach(item -> System.out.println(item.source));
-			System.out.println();
-			System.out.println();	
-		}
-		
-		gragh.drawMatriz();
-		
+		System.out.println();
+		gragh.restart();
+		gragh.queryRelations("45");
 	}
 }

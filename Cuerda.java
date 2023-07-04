@@ -1,7 +1,7 @@
 public class Cuerda {
 
 	
-	public int cortar(int[] precios, int longitud)  {
+   public int cortar(int[] precios, int longitud)  {
         int[] elementos = new int[longitud + 1];
  
         for (int i = 1; i <= longitud; i++) {
